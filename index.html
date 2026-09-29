@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>L'Avant-Garde Pavilion | First-Person 3D Virtual Art Gallery</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- WebGL Three.js Canvas Container -->
+  <div id="canvas-container"></div>
+
+  <!-- First-Person Interactive Crosshair / Reticle -->
+  <div id="crosshair">
+    <div id="crosshair-ring"></div>
+    <div id="crosshair-dot"></div>
+  </div>
+  <div id="interaction-prompt"></div>
+
+  <!-- Welcome / Pointer Lock Instructions Screen -->
+  <div id="instructions-overlay">
+    <div class="intro-card">
+      <div class="gallery-subhead">Virtual Exhibition & Simulation</div>
+      <h1 class="gallery-title">L'Avant-Garde Pavilion</h1>
+      <p class="gallery-description">
+        Step directly into a curated contemporary art gallery in first-person view.
+        Roam freely through the architectural atrium, inspect algorithmic and dimensional artworks,
+        and experience spatial synthesizer acoustic signatures.
+      </p>
+
+      <div class="controls-preview">
+        <div class="control-item">
+          <div class="key-badge">W A S D</div>
+          <span>Walk & Roam</span>
+        </div>
+        <div class="control-item">
+          <div class="key-badge">MOUSE</div>
+          <span>Look Around</span>
+        </div>
+        <div class="control-item">
+          <div class="key-badge">E / CLICK</div>
+          <span>Inspect Artwork</span>
+        </div>
+        <div class="control-item">
+          <div class="key-badge">SHIFT</div>
+          <span>Sprint</span>
+        </div>
+        <div class="control-item">
+          <div class="key-badge">M</div>
+          <span>Mute Audio</span>
+        </div>
+        <div class="control-item">
+          <div class="key-badge">ESC</div>
+          <span>Pause / Exit</span>
+        </div>
+      </div>
+
+      <button id="btn-enter-gallery" class="btn-enter">
+        <span>Enter Exhibition</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Heads-Up Display (HUD) -->
+  <div id="hud">
+    <div class="hud-top">
+      <div class="gallery-logo-hud">
+        <h1>L'Avant-Garde</h1>
+        <p>Contemporary AR/VR Gallery</p>
+      </div>
+      <div class="hud-actions">
+        <button id="btn-audio-toggle" class="hud-btn" title="Toggle Sound (M)">
+          <svg viewBox="0 0 24 24">
+            <path d="M11 5L6 9H2v6h4l5 4V5zM15.54 8.46a5 5 0 010 7.07M19.07 4.93a10 10 0 010 14.14"></path>
+          </svg>
+        </button>
+        <button id="btn-fullscreen-toggle" class="hud-btn" title="Toggle Fullscreen">
+          <svg viewBox="0 0 24 24">
+            <path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="hud-bottom">
+      <div class="controls-legend">
+        <div class="legend-item"><span class="legend-key">[WASD]</span> Walk</div>
+        <div class="legend-item"><span class="legend-key">[Shift]</span> Sprint</div>
+        <div class="legend-item"><span class="legend-key">[E / Click]</span> Inspect</div>
+        <div class="legend-item"><span class="legend-key">[M]</span> Audio</div>
+      </div>
+
+      <!-- Radar Minimap -->
+      <div class="minimap-container">
+        <div class="minimap-label">Gallery Map</div>
+        <canvas id="minimap-canvas" width="140" height="140"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Artwork Inspection Placard & Audio Guide Modal -->
+  <div id="artwork-modal">
+    <div class="modal-container">
+      <button id="btn-close-modal" class="btn-close-modal" title="Close (ESC)">&times;</button>
+
+      <!-- Left: High-Res Artwork View -->
+      <div class="modal-artwork-preview">
+        <div class="preview-frame">
+          <img id="modal-image" src="" alt="Artwork View">
+        </div>
+      </div>
+
+      <!-- Right: Curatorial Essay & Audio Guide -->
+      <div class="modal-artwork-info">
+        <div class="artwork-badge">Curator's Selection</div>
+        <h2 id="modal-title" class="artwork-title">Artwork Title</h2>
+        <div id="modal-meta" class="artwork-meta"></div>
+
+        <p id="modal-essay" class="artwork-curator-essay"></p>
+
+        <!-- Interactive Audio Guide Player -->
+        <div id="audio-guide-box" class="audio-guide-box">
+          <button id="btn-audio-guide" class="btn-audio-guide" title="Play Curatorial Audio Guide">
+            ▶
+          </button>
+          <div class="audio-guide-details">
+            <div class="audio-guide-title">Curatorial Audio Guide</div>
+            <div class="audio-guide-subtitle">Acoustic harmonic signature & curatorial narration</div>
+            <div class="audio-waveform">
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+              <div class="wave-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Three.js CDN Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Gallery Simulation Modules -->
+  <script src="js/audio.js"></script>
+  <script src="js/artworks.js"></script>
+  <script src="js/gallery.js"></script>
+  <script src="js/controls.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
